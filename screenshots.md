@@ -11,7 +11,12 @@ Five screenshots for the Hot App Summer submission. Capture at a **desktop width
 - **Show:** the Gracefully Glitching mark, the **Fog & Forge** logo (note the gold "Forge" glow), the one-line pitch, and the three buttons including **Accessibility**. The "No accounts. No timers. Plays offline." footer should be visible.
 - **Why:** establishes tone, entity, and that comfort is a first-class feature.
 
-### 2. A fresh day — "the core loop"
+### 2. The living scene — "it's an actual world"
+- **Where:** the game screen, with the SVG scene of Emberhollow in frame (best a few wards/townsfolk in).
+- **Show:** the glowing forge, the fogged night sky and moon, the lit town windows, ward objects along the ground, and (if forged) the lantern's glow. A progressed save makes this richest.
+- **Why:** proves it's a visual RPG, not a text log.
+
+### 3. A fresh day — "the core loop"
 - **Where:** after **New Game**, on Day 1 before spending spoons.
 - **Show:** the **actions panel** (all five actions with their spoon costs), the **spoon pips + "Spoons today: X of Y"**, and the opening narrative line in the event log. The Day badge and chapter title should be in frame.
 - **Why:** this is the playable loop and the spoon mechanic at a glance.

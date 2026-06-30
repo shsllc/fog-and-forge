@@ -257,6 +257,7 @@
   }
 
   function renderAll(s, handlers) {
+    if (global.FFScene) global.FFScene.update(s);
     renderHeader(s);
     renderSpoons(s);
     renderResources(s);

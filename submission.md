@@ -25,6 +25,7 @@ It's built to the brand of Gracefully Glitching LLC: warm and unflinching, never
 
 ## Built With
 - **HTML5** — semantic, single-page, two-screen structure (title / game) with native `<dialog>` for the How-to-Play walkthrough and the Almanac.
+- **Hand-built reactive SVG scene** — a living illustration of Emberhollow (forge, fog, town, wards, townsfolk, lantern, embers) that updates from game state every render, themeable via the palette and fully reduced-motion aware. No external art assets.
 - **CSS3** — custom-property theming, responsive grid, three accessibility modes, a subtle animated fog layer that fully disables under reduced-motion.
 - **Vanilla JavaScript (ES5-style, no framework, no build)** — `data.js` (content/balance incl. townsfolk & glimpses), `game.js` (engine, world-building, save/load), `ui.js` (rendering + Almanac), `main.js` (wiring), and a shared `gg/` account layer.
 - **Web Storage API (`localStorage`)** — autosave of game state and accessibility settings.

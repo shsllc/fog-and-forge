@@ -20,6 +20,8 @@ The arc is deliberately *living-with*, not *cure*. As the final chapter puts it:
 
 ## Features
 
+- **A living scene of Emberhollow.** The centerpiece is a hand-built, reactive **SVG scene** — a glowing forge under a fogged night sky — that responds to your game state: the **fog bank thickens and thins with your fog level**, the **town lights up** window by window as the story advances, **wards appear by the forge** as you craft them, the **keystone lantern lights** the scene, **townsfolk step in** once you've met them, and **embers rise** when the grey lifts. Actions trigger brief light pulses for feedback. Fully themeable and animated — all motion stops under reduced-motion.
+
 - **Spoon-theory core loop.** Each day grants a *variable* number of spoons (energy). Bad days are real; good days aren't guaranteed. A normal day is about 5 spoons; a clear morning 7–8; a heavy-fog day as low as 3. Wards raise your floor so your worst days are a little gentler.
 - **Five actions, each with a cost and a consequence.** Gather Ore, Tend the Hearth, Venture into the Fog, Reflect, and Rest. **Rest is treated as progress, not failure** — and resting early gives a little back tomorrow.
 - **Venturing rewards exploration.** The fog is where the world opens: one-time **Discoveries** (a warm spring that restores spoons, a forgotten cache, waymarkers that push the fog back), first-time **glimpses** of a gentle fog-bestiary, and the neighbours you only meet out there. All tracked in the Almanac.
@@ -120,6 +122,7 @@ FogForge/
 │   └── js/
 │       ├── data.js         # content & balance: actions, wards, chapters, journal, townsfolk, glimpses
 │       ├── game.js         # engine: state, spoon rolls, day loop, world-building, save/load
+│       ├── scene.js        # the reactive SVG scene of Emberhollow
 │       ├── ui.js           # DOM rendering incl. Almanac (no game logic)
 │       ├── main.js         # bootstrap & event wiring
 │       └── gg/             # shared Gracefully Glitching Games account layer (inert until configured)

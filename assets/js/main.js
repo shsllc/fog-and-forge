@@ -19,6 +19,7 @@
     doAction: function (id) {
       var r = G.doAction(state, id);
       if (!r.ok && r.reason) flash(r.reason);
+      if (r.ok && window.FFScene) window.FFScene.pulse(id);
       UI.renderAll(state, handlers);
       announceDayEnd(r);
       touch();
@@ -26,6 +27,7 @@
     forgeWard: function (id) {
       var r = G.forgeWard(state, id);
       if (!r.ok && r.reason) flash(r.reason);
+      if (r.ok && window.FFScene) window.FFScene.pulse("forge");
       UI.renderAll(state, handlers);
       announceDayEnd(r);
       touch();
@@ -223,6 +225,7 @@
 
   function init() {
     UI.cache();
+    if (window.FFScene) window.FFScene.mount(document.getElementById("scene-wrap"));
     wireTitle();
     wireSettings();
     wireHowTo();
