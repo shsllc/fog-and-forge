@@ -475,6 +475,10 @@ html.reduced-motion .log { scroll-behavior: auto; }
 .log-people { color: var(--rose); }
 .log-glimpse { color: var(--teal); font-style: italic; }
 .log-gift { color: var(--gold); font-family: var(--font-ui); font-size: 0.92rem; }
+.log-discovery { color: var(--gold); }
+.log-lift { color: var(--success); font-family: var(--font-ui); }
+.log-dip { color: var(--rose); font-family: var(--font-ui); }
+.alm-hint { font-size: 0.78rem; color: var(--muted); font-style: italic; margin: 0 0 0.5rem; }
 
 .days-kept { font-family: var(--font-ui); font-size: 0.78rem; color: var(--muted); margin: 0.5rem 0 0; }
 

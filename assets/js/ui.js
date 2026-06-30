@@ -194,6 +194,7 @@
       statChip("🪨", s.wards.length, "wards") +
       statChip("🤝", peopleMet, "of " + D.TOWNSFOLK.length + " met") +
       statChip("🦋", s.glimpses.length, "of " + D.GLIMPSES.length + " glimpsed") +
+      statChip("🗺️", (s.discoveries || []).length, "of " + D.DISCOVERIES.length + " charted") +
       "</div>";
 
     // Townsfolk
@@ -221,6 +222,19 @@
         '<span class="alm-ic" aria-hidden="true">' + (seen ? g.icon : "❓") + "</span>" +
         '<div><span class="alm-gname">' + (seen ? g.name : "Not yet glimpsed") + "</span>" +
         (seen ? '<span class="alm-gtext">' + g.text + "</span>" : "") + "</div></div>";
+    });
+    html += "</div>";
+
+    // Discoveries (places charted while venturing)
+    var disc = s.discoveries || [];
+    html += '<h3 class="alm-h">Places charted</h3>';
+    html += '<p class="alm-hint">Found only by venturing into the fog.</p><div class="alm-glimpses">';
+    D.DISCOVERIES.forEach(function (d) {
+      var found = disc.indexOf(d.id) !== -1;
+      html += '<div class="alm-glimpse' + (found ? " seen" : "") + '">' +
+        '<span class="alm-ic" aria-hidden="true">' + (found ? d.icon : "❓") + "</span>" +
+        '<div><span class="alm-gname">' + (found ? d.name : "Uncharted") + "</span>" +
+        (found ? '<span class="alm-gtext">' + d.text + "</span>" : "") + "</div></div>";
     });
     html += "</div>";
 

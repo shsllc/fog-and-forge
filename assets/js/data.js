@@ -57,7 +57,7 @@
       name: "Venture into the Fog",
       icon: "🌫️",
       cost: 4,
-      hint: "Costly and uncertain. Bigger finds — and the fog may thicken.",
+      hint: "Where the world opens: discoveries, glimpses, neighbours, embers. Costly, and the fog may thicken.",
       enabled: function (s) {
         return true;
       },
@@ -336,6 +336,38 @@
     { id: "lostkite", icon: "🪁", name: "A Lost Kite", text: "Caught in a dead tree, string trailing into the fog. Somebody flew this on a clearer day. Somebody had a clearer day here once. So might you again." },
   ];
 
+  // ---- Discoveries: one-time finds, ONLY while venturing. The payoff for
+  // exploring. Each is found once and recorded in the Almanac's "Places". ----
+  const DISCOVERIES = [
+    { id: "cache", icon: "📦", name: "A Forgotten Cache", text: "Half-buried under grey moss, a smith's old stash. Someone meant to come back for it. You'll put it to use.", reward: { ore: 5 } },
+    { id: "spring", icon: "♨️", name: "A Warm Spring", text: "Water that runs warm even here. You soak your hands until the ache loosens. You leave lighter than you came.", reward: { spoons: 2 } },
+    { id: "waymarker", icon: "🪨", name: "The Waymarker Stones", text: "A line of cairns someone set to mark the safe way through. You add a stone of your own. The fog feels a little less trackless now.", reward: { fog: -10 } },
+    { id: "oldforge", icon: "🏚️", name: "An Abandoned Forge", text: "Cold for years, but the bones are good. You salvage embers from the old coal-bed, and something else — the sense that you're not the first to keep a fire in the grey.", reward: { ember: 3, journal: "jd1" } },
+    { id: "kindness", icon: "🍲", name: "A Stranger's Kindness", text: "A pot left steaming on a stump, a note tucked under it: 'for whoever's out here.' You eat. You weep a little, the good kind. You go on warmer.", reward: { calm: 4 } },
+    { id: "edge", icon: "🌅", name: "The Fog's Edge, Glimpsed", text: "For one whole breath the grey thins and you see it — fields, a far horizon, proof the world keeps going past all this. Then it closes. But you saw. You can't unsee it now.", reward: { ember: 5 } },
+  ];
+
+  // ---- Spoon events: the sporadic truth of spoonie life. Random shifts up
+  // and down, never framed as failure. Dips usually carry a small mercy
+  // (calm) so the game models self-compassion, not punishment. ----
+  // when: "morning" (after the daily roll) or "anytime" (mid-day, after an action)
+  // delta: change to spoons (lift > 0, dip < 0). kind drives the log colour.
+  const SPOON_EVENTS = [
+    // mornings — set the tone of the day
+    { id: "gift-morning", when: "morning", kind: "lift", delta: 2, text: "You wake clear-headed — a gift morning. Don't spend it all proving you're 'back.'" },
+    { id: "good-sleep", when: "morning", kind: "lift", delta: 1, text: "Decent sleep, for once. The edges of everything are softer today." },
+    { id: "pressure-lift", when: "morning", kind: "lift", delta: 1, text: "The pressure lifted overnight and your joints, for once, agree with the sky." },
+    { id: "tired-already", when: "morning", kind: "dip", delta: -1, text: "You wake already tired — the kind sleep doesn't touch. Smaller today, then. That's allowed.", reward: { calm: 1 } },
+    { id: "flare-morning", when: "morning", kind: "dip", delta: -2, text: "A flare met you before your feet hit the floor. Today is a survival day, and surviving counts as keeping the forge.", reward: { calm: 2 } },
+    { id: "front-rolled-in", when: "morning", kind: "dip", delta: -1, text: "A weather front rolled in; your body felt it before the clouds arrived.", reward: { calm: 1 } },
+    // mid-day — the sporadic, out-of-nowhere shifts
+    { id: "second-wind", when: "anytime", kind: "lift", delta: 1, text: "A second wind, out of nowhere. You take it gratefully and ask it no questions." },
+    { id: "sunbreak", when: "anytime", kind: "lift", delta: 1, text: "Light breaks through the window and finds you where you sit. A small, real lift." },
+    { id: "wave", when: "anytime", kind: "dip", delta: -1, text: "A wave rolls through — fog behind the eyes, sudden and heavy. You set something down.", reward: { calm: 1 } },
+    { id: "overdid", when: "anytime", kind: "dip", delta: -1, text: "You pushed a touch past the line and felt your body answer. Noted — gently, without blame." },
+    { id: "kind-word", when: "anytime", kind: "lift", delta: 0, text: "A kind word arrives at exactly the right moment. Nothing changes; everything is a little easier.", reward: { calm: 2 } },
+  ];
+
   // ---- Daily return gifts: warm, never a reward for streaks. ----
   // Given on the first session of a new real-world day. Missing days costs
   // nothing — the hearth is simply kept while you're away.
@@ -352,6 +384,7 @@
     { id: "jm", title: "What Mirin learned", text: "She rested early today, on purpose, and didn't say sorry. I taught her that without meaning to, just by doing it where she could see. We pass this down. The pacing, the permission. A quiet inheritance." },
     { id: "jb", title: "Bog's spare lantern", text: "He lost someone to the deep fog and kept ferrying. I used to think that was stubbornness. Now I think it's love with nowhere else to go, so it goes back out on the water, every day, lighting the channel for the next person." },
     { id: "jq", title: "The Clearing, marked", text: "Quill put my forge on her map. A fixed point. After a year of feeling like I was disappearing into the grey, someone drew me as a place that stays. The Clearing is marked in gold to the east. My turn, she says." },
+    { id: "jd1", title: "The abandoned forge", text: "Found a forge out in the fog, cold for years. Someone kept a fire here once, the way I keep mine. They're gone, or moved on, or rested for good — I'll never know which. But the coal-bed still had embers in it. We leave more warmth behind than we think. So will I." },
   ];
 
   // ---- Cosmetic themes. Visuals live in CSS (html.theme-<id>). ----
@@ -429,6 +462,8 @@
     ALL_JOURNAL: JOURNAL.concat(THREAD_JOURNAL), // for lookups by id
     TOWNSFOLK: TOWNSFOLK,
     GLIMPSES: GLIMPSES,
+    DISCOVERIES: DISCOVERIES,
+    SPOON_EVENTS: SPOON_EVENTS,
     DAILY_GIFTS: DAILY_GIFTS,
     THEMES: THEMES,
     OFFERS: OFFERS,

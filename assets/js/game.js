@@ -35,6 +35,7 @@
       reflectCount: 0,
       townsfolk: {},        // id -> number of beats completed
       glimpses: [],         // ids of fog phenomena seen
+      discoveries: [],      // ids of places found while venturing
       realDays: 0,          // distinct real-world days played (never "streak")
       giftDate: null,       // last real date a return-gift was given (YYYY-MM-DD)
       flags: {},
@@ -92,11 +93,13 @@
     s.spoons.carryover = 0;
     s.flags.reflectedToday = false;
     s.flags.restedEarly = false;
+    s.flags.shiftsToday = 0;
     var band = fogBand(s.fog);
     var openers = D.DAY_OPENERS[band];
     log(s, "— Day " + s.day + " —", "day");
     log(s, openers[RNG.int(0, openers.length - 1)], "ambient");
-    maybeDailyGift(s); // warm welcome on the first session of a new real day
+    maybeDailyGift(s);         // warm welcome on the first session of a new real day
+    maybeMorningEvent(s, RNG); // the day may wake you with more, or less
     log(s, "You have " + s.spoons.max + " spoon" + (s.spoons.max === 1 ? "" : "s") + " today.", "spoons");
   }
 
@@ -125,8 +128,12 @@
       tryTownsfolk(s, "hearth");
     } else if (action.id === "venture") {
       tryTownsfolk(s, "fog");
+      tryDiscovery(s, RNG);  // the payoff for exploring
       tryGlimpse(s, RNG);
     }
+
+    // The sporadic shift — a lift or a wave, any day, after any real effort.
+    if (action.id !== "rest") maybeDayShift(s, RNG);
 
     var ended = false;
     if (result.endsDay || s.spoons.current <= 0) {
@@ -225,6 +232,8 @@
     if (reward.calm) s.resources.calm += reward.calm;
     if (reward.ember) { s.resources.ember += reward.ember; s.totals.embers += reward.ember; }
     if (reward.carry) s.spoons.carryover = (s.spoons.carryover || 0) + reward.carry;
+    if (reward.spoons) { s.spoons.max += reward.spoons; s.spoons.current += reward.spoons; }
+    if (reward.fog) s.fog = clamp(s.fog + reward.fog, 0, 100);
     if (reward.journal && s.journalUnlocked.indexOf(reward.journal) === -1) {
       s.journalUnlocked.push(reward.journal);
     }
@@ -264,8 +273,79 @@
     if (!rng.chance(0.5)) return null;
     var g = unseen[rng.int(0, unseen.length - 1)];
     s.glimpses.push(g.id);
+    applyReward(s, { ember: 1 }); // wonder is a warm coin of the person you still are
     log(s, g.icon + " You glimpse something in the grey — " + g.name + ". " + g.text, "glimpse");
+    log(s, "Seeing it stirs something. +1 ember.", "note");
     return g;
+  }
+
+  // Discoveries are the payoff for venturing: one-time finds out in the fog.
+  function tryDiscovery(s, rng) {
+    var undisc = D.DISCOVERIES.filter(function (d) { return s.discoveries.indexOf(d.id) === -1; });
+    if (undisc.length === 0) return null;
+    if (!rng.chance(0.5)) return null;
+    var d = undisc[rng.int(0, undisc.length - 1)];
+    s.discoveries.push(d.id);
+    applyReward(s, d.reward);
+    log(s, d.icon + " You find something out here — " + d.name + ". " + d.text, "discovery");
+    log(s, rewardNote(d.reward), "note");
+    return d;
+  }
+
+  function rewardNote(r) {
+    var parts = [];
+    if (r.spoons) parts.push("+" + r.spoons + " spoon" + (r.spoons === 1 ? "" : "s"));
+    if (r.ore) parts.push("+" + r.ore + " ore");
+    if (r.ember) parts.push("+" + r.ember + " ember");
+    if (r.calm) parts.push("+" + r.calm + " calm");
+    if (r.fog) parts.push("fog " + r.fog);
+    return parts.join(", ") + (parts.length ? "." : "");
+  }
+
+  // The sporadic truth of spoonie life: random spoon swings, never as failure.
+  function applySpoonShift(s, delta, wholeDay) {
+    if (delta > 0) {
+      s.spoons.max += delta;
+      s.spoons.current += delta;
+    } else if (delta < 0) {
+      if (wholeDay) {
+        s.spoons.max = clamp(s.spoons.max + delta, 1, 12);
+        s.spoons.current = s.spoons.max;
+      } else {
+        s.spoons.current = clamp(s.spoons.current + delta, 0, s.spoons.max);
+      }
+    }
+  }
+
+  function logShift(s, e) {
+    log(s, e.text, e.kind);
+    if (e.delta) {
+      log(s, (e.delta > 0 ? "+" : "") + e.delta + " spoon" + (Math.abs(e.delta) === 1 ? "" : "s") + ".", "note");
+    }
+  }
+
+  // Morning shift — sets the day's capacity (day 1 stays stable for onboarding).
+  function maybeMorningEvent(s, rng) {
+    if (s.day < 2) return;
+    if (!rng.chance(0.32)) return;
+    var pool = D.SPOON_EVENTS.filter(function (e) { return e.when === "morning"; });
+    var e = pool[rng.int(0, pool.length - 1)];
+    applySpoonShift(s, e.delta, true);
+    if (e.reward) applyReward(s, e.reward);
+    logShift(s, e);
+  }
+
+  // Mid-day shift — the out-of-nowhere lift or wave. At most one per day.
+  function maybeDayShift(s, rng) {
+    if ((s.flags.shiftsToday || 0) >= 1) return null;
+    if (!rng.chance(0.13)) return null;
+    var pool = D.SPOON_EVENTS.filter(function (e) { return e.when === "anytime"; });
+    var e = pool[rng.int(0, pool.length - 1)];
+    s.flags.shiftsToday = 1;
+    applySpoonShift(s, e.delta, false);
+    if (e.reward) applyReward(s, e.reward);
+    logShift(s, e);
+    return e;
   }
 
   function todayStr() {
