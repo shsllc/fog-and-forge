@@ -37,11 +37,14 @@
     });
   }
 
-  // PUT /saved-game — store (or clear, with null) the in-progress game.
-  function saveGame(state) {
+  // PUT /saved-game — store (or clear, with null) this game's in-progress save.
+  // `game` namespaces the slot so each GG game keeps its own save under the
+  // shared account (the backend stores it under savedGames[game]). Sending the
+  // key is harmless on older backends that ignore it.
+  function saveGame(state, game) {
     return authedFetch("/saved-game", {
       method: "PUT",
-      body: JSON.stringify({ savedGame: state || null }),
+      body: JSON.stringify({ savedGame: state || null, game: game || undefined }),
     }).catch(function () { return null; });
   }
 

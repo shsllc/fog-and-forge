@@ -13,10 +13,17 @@
   "use strict";
 
   var cfg = window.GGConfig;
+  var GAME_ID = "forge";  // namespaces this game's cloud save (savedGames[GAME_ID])
   var app = null;        // { getState, applyCloudState }
   var els = {};
   var saveTimer = null;
   var meCache = null;
+
+  // Fog & Forge's own cloud save ONLY — never the shared/legacy slot, which may
+  // belong to another GG game (e.g. Solitaire). No cross-game restore.
+  function cloudSave(me) {
+    return (me && me.savedGames && me.savedGames[GAME_ID]) || null;
+  }
 
   function $(id) { return document.getElementById(id); }
   function show(el, on) { if (el) el.hidden = !on; }
@@ -52,10 +59,10 @@
 
   function maybeOfferRestore() {
     if (!app) return;
-    var hasCloud = meCache && meCache.savedGame;
-    var ahead = hasCloud && progressScore(meCache.savedGame) > progressScore(app.getState());
+    var cloud = cloudSave(meCache);
+    var ahead = cloud && progressScore(cloud) > progressScore(app.getState());
     if (ahead) {
-      var d = meCache.savedGame.day || 1;
+      var d = cloud.day || 1;
       text(els.restoreNote, "A more recent forge is saved to your account (Day " + d + ").");
       show(els.restore, true);
     } else {
@@ -65,8 +72,9 @@
   }
 
   function doRestore() {
-    if (meCache && meCache.savedGame && app) {
-      app.applyCloudState(meCache.savedGame);
+    var cloud = cloudSave(meCache);
+    if (cloud && app) {
+      app.applyCloudState(cloud);
       show(els.restore, false);
     }
   }
@@ -76,7 +84,7 @@
     if (!window.GGAuth.isLoggedIn()) return;
     clearTimeout(saveTimer);
     saveTimer = setTimeout(function () {
-      window.GGCloud.saveGame(stateObj);
+      window.GGCloud.saveGame(stateObj, GAME_ID);
     }, 1500);
   }
 
