@@ -29,6 +29,7 @@ It's built to the brand of Gracefully Glitching LLC: warm and unflinching, never
 - **Vanilla JavaScript (ES5-style, no framework, no build)** — `data.js` (content/balance incl. townsfolk & glimpses), `game.js` (engine, world-building, save/load), `ui.js` (rendering + Almanac), `main.js` (wiring), and a shared `gg/` account layer.
 - **Web Storage API (`localStorage`)** — autosave of game state and accessibility settings.
 - **AWS (optional accounts + cross-device cloud sync)** — Amazon **Cognito** Hosted UI (Authorization Code + PKCE) and an **API Gateway + Lambda** backend (`GET /me`, `PUT /saved-game`), shared with the other Gracefully Glitching games so one sign-in covers them all. Inert by default; the standalone build stays fully offline.
+- **Stripe (optional, non-obtrusive monetization)** — the **Forge Market**: free cosmetic themes that work offline, plus optional one-time cosmetic packs, content expansions, a cross-game supporter tier, a Ko-fi tip jar, and redeemable giveaway codes. Purchases (`/checkout`) and redemptions (`/redeem`) are entitlement-gated via the account so paid content can't be unlocked client-side. The full game is always free; spoons/energy/rest are never for sale.
 - **Netlify** — static hosting + `netlify.toml`; the game is served under the shared `games.gracefullyglitching.com` origin so its login is shared with the games hub.
 - **TypeScript** — `brand/entity-rules.ts` as the typed single source of truth for entity, voice, and palette.
 

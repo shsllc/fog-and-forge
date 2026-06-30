@@ -354,6 +354,55 @@
     { id: "jq", title: "The Clearing, marked", text: "Quill put my forge on her map. A fixed point. After a year of feeling like I was disappearing into the grey, someone drew me as a place that stays. The Clearing is marked in gold to the east. My turn, she says." },
   ];
 
+  // ---- Cosmetic themes. Visuals live in CSS (html.theme-<id>). ----
+  // tier 'free' is always selectable; 'premium' requires owning `sku`.
+  const THEMES = [
+    { id: "dusk", name: "Aubergine Dusk", desc: "The original low-lit palette.", tier: "free", sku: null },
+    { id: "candlelit", name: "Candlelit", desc: "Warmer — more amber, more gold.", tier: "free", sku: null },
+    { id: "slate", name: "Slate Hush", desc: "Cooler and quiet, like fog at dawn.", tier: "free", sku: null },
+    { id: "spring", name: "Spring Thaw", desc: "Green and teal; the first thin morning.", tier: "premium", sku: "season-pack" },
+    { id: "summer", name: "Summer Gold", desc: "Banked warmth, gold-forward.", tier: "premium", sku: "season-pack" },
+    { id: "autumn", name: "Autumn Rust", desc: "Rose and rust; the turning.", tier: "premium", sku: "season-pack" },
+    { id: "winter", name: "Winter Hush", desc: "Pale cold blue; bone-deep fog.", tier: "premium", sku: "season-pack" },
+  ];
+
+  // ---- The Forge Market catalog. Suggested pricing; tweak freely. ----
+  // `status`: "available" (purchasable once backend is live) or "soon"
+  // (announced, content not built yet — shown honestly, never as finished).
+  // `kind`: cosmetic | expansion | bundle | supporter.
+  const OFFERS = [
+    {
+      sku: "forge-lights", kind: "cosmetic", name: "Forge Lights", price: "$1.99", status: "available",
+      desc: "Cosmetic ember & lantern glow effects for the forge. Look-and-feel only — no gameplay change.",
+      grants: [],
+    },
+    {
+      sku: "season-pack", kind: "cosmetic", name: "Season Pack", price: "$2.99", status: "available",
+      desc: "Four seasonal palettes — Spring Thaw, Summer Gold, Autumn Rust, Winter Hush. Cosmetic only.",
+      grants: ["theme:spring", "theme:summer", "theme:autumn", "theme:winter"],
+    },
+    {
+      sku: "letters-never-sent", kind: "expansion", name: "Letters Never Sent", price: "$4.99", status: "soon",
+      desc: "A bonus expansion: extra post-Clearing epilogue chapters and a new townsfolk thread. The free game stays complete on its own.",
+      grants: [],
+    },
+    {
+      sku: "the-far-fog", kind: "expansion", name: "The Far Fog", price: "$4.99", status: "soon",
+      desc: "A new venturing region with fresh glimpses to discover and a new ward to forge. Optional, additive content.",
+      grants: [],
+    },
+    {
+      sku: "lantern-keeper-bundle", kind: "bundle", name: "Lantern-keeper Bundle", price: "$9.99", status: "available",
+      desc: "Every cosmetic pack and every expansion for Fog & Forge, at a kinder price than buying separately.",
+      grants: ["theme:spring", "theme:summer", "theme:autumn", "theme:winter"],
+    },
+    {
+      sku: "gg-supporter", kind: "supporter", name: "Cross-game Supporter", price: "$14.99", status: "available",
+      desc: "Supporter perks across every Gracefully Glitching game — cosmetics, bonus content, and a supporter mark — tied to your account.",
+      grants: ["theme:spring", "theme:summer", "theme:autumn", "theme:winter"],
+    },
+  ];
+
   // ---- helpers shared with engine ----
   function pick(arr, rng) {
     return arr[rng.int(0, arr.length - 1)];
@@ -381,6 +430,8 @@
     TOWNSFOLK: TOWNSFOLK,
     GLIMPSES: GLIMPSES,
     DAILY_GIFTS: DAILY_GIFTS,
+    THEMES: THEMES,
+    OFFERS: OFFERS,
     DAY_OPENERS: DAY_OPENERS,
     helpers: { pick: pick, clamp: clamp, mitigatedFog: mitigatedFog },
   };

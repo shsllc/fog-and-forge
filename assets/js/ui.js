@@ -249,6 +249,11 @@
     root.classList.toggle("reduced-motion", !!st.reducedMotion);
     root.classList.toggle("large-text", !!st.largeText);
     root.classList.toggle("high-contrast", !!st.highContrast);
+    // cosmetic theme: clear any existing theme-* class, then apply the chosen one
+    var existing = [];
+    root.classList.forEach(function (c) { if (c.indexOf("theme-") === 0) existing.push(c); });
+    existing.forEach(function (c) { root.classList.remove(c); });
+    if (st.theme && st.theme !== "dusk") root.classList.add("theme-" + st.theme);
   }
 
   function showScreen(which) {

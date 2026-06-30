@@ -50,6 +50,27 @@ When deployed under the **shared Gracefully Glitching Games origin** (`games.gra
 
 To switch accounts on for a deployment, fill in the four backend values in [`assets/js/gg/config.js`](assets/js/gg/config.js) (region, userPoolId, clientId, hostedUiDomain, apiBaseUrl), register this game's callback URL in the Cognito app client, and serve it under the games origin. Full instructions are in the file's header comment.
 
+## The Forge Market (optional, non-obtrusive monetization)
+
+The whole game — all ten chapters, every ward, the townsfolk, the Almanac, accessibility — is **free, forever**. Monetization is strictly optional and never touches the core experience. **We never sell spoons, energy, rest, or time-skips** — in a spoon-theory game that would betray the premise.
+
+The **Forge Market** (✦ Market in-game) offers:
+
+- **Cosmetic themes** — three **free** palettes (Aubergine Dusk, Candlelit, Slate Hush) that work offline right now, plus a premium **Season Pack** (Spring / Summer / Autumn / Winter).
+- **A catalog of optional one-time offers** (suggested pricing, easily tuned in [`data.js`](assets/js/data.js) → `OFFERS`):
+  | Offer | Type | Price |
+  |---|---|---|
+  | Forge Lights | cosmetic | $1.99 |
+  | Season Pack | cosmetic | $2.99 |
+  | Letters Never Sent | expansion (bonus chapters/thread) | $4.99 |
+  | The Far Fog | expansion (new region/glimpses/ward) | $4.99 |
+  | Lantern-keeper Bundle | bundle | $9.99 |
+  | Cross-game Supporter | perks across all GG games | $14.99 |
+- **A tip jar** (Ko-fi) on every screen — pay-what-you-want, dismissable.
+- **Giveaway / share-to-win codes** — a redeem field for promo codes (e.g. rewards for sharing GG posts) that unlock items free.
+
+**How the gating works (no client-side bypass):** free themes apply locally and instantly. Premium items require an **entitlement on your account** (`GET /me` returns owned SKUs), purchases run through the shared GG **Stripe `/checkout`**, and codes through **`/redeem`** — so paid content can't be unlocked by editing the JavaScript. All of it is **inert until the backend is configured** (`assets/js/gg/config.js`), exactly like sign-in; the standalone build shows the free themes and an honest "coming soon" on paid items. Content expansions are listed as genuine upcoming offers, never faked as finished.
+
 ## Local setup
 
 No build tools, no dependencies. Any static file server works.

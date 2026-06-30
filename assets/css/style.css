@@ -34,6 +34,46 @@
 
 /* accessibility settings (toggled on <html>) */
 html.large-text { --fs-base: 19px; }
+
+/* ===================== COSMETIC THEMES ===================== */
+/* Default (no class) = "Aubergine Dusk", defined in :root above.
+ * Free themes and the premium Season Pack override the palette here.
+ * Placed BEFORE high-contrast so the accessibility theme always wins. */
+
+/* — free — */
+html.theme-candlelit {
+  --ink: #201613; --surface: #2c1d17; --surface-raised: #3a281e;
+  --aubergine: #523524; --teal: #d8a24e; --gold: #f0cf86; --rose: #e0a98f;
+  --text: #f3e9df; --muted: #c3ac98;
+}
+html.theme-slate {
+  --ink: #12161b; --surface: #1a2027; --surface-raised: #273039;
+  --aubergine: #33414e; --teal: #6fc6c0; --gold: #cdd6dd; --rose: #aebfcb;
+  --text: #e8eef3; --muted: #a3b2bf;
+}
+
+/* — premium: Season Pack — */
+html.theme-spring {
+  --ink: #121d18; --surface: #182a22; --surface-raised: #21392f;
+  --aubergine: #2f4a3c; --teal: #69d6a9; --gold: #d7e08a; --rose: #bfe0b0;
+  --text: #eaf4ec; --muted: #a7c2b1;
+}
+html.theme-summer {
+  --ink: #211a10; --surface: #2e2414; --surface-raised: #3e311b;
+  --aubergine: #574326; --teal: #e6c25a; --gold: #ffdf8a; --rose: #f0b98a;
+  --text: #f6efe0; --muted: #cdb892;
+}
+html.theme-autumn {
+  --ink: #1f1411; --surface: #2c1a14; --surface-raised: #3c241a;
+  --aubergine: #5a3326; --teal: #e08a5a; --gold: #edb368; --rose: #e29a8a;
+  --text: #f4e6df; --muted: #c6a596;
+}
+html.theme-winter {
+  --ink: #131820; --surface: #1b232e; --surface-raised: #28313f;
+  --aubergine: #36465a; --teal: #8fcfe0; --gold: #d8e6f0; --rose: #c2d2e0;
+  --text: #ecf2f8; --muted: #a8bccc;
+}
+
 html.high-contrast {
   --ink: #100a14;
   --surface: #1e1424;
@@ -499,6 +539,78 @@ html.reduced-motion .log { scroll-behavior: auto; }
 .alm-glimpse.seen { opacity: 1; }
 .alm-gname { display: block; font-family: var(--font-ui); font-weight: 600; font-size: 0.9rem; }
 .alm-gtext { display: block; font-size: 0.82rem; color: var(--muted); margin-top: 0.15rem; }
+
+/* ===================== FORGE MARKET ===================== */
+.mkt-lede { font-size: 0.95rem; color: var(--muted); margin: 0.5rem 0 0; }
+.mkt-themes { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+@media (max-width: 560px) { .mkt-themes { grid-template-columns: 1fr; } }
+.mkt-theme {
+  text-align: left;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-areas: "sw name" "sw desc" "sw tag";
+  gap: 0.05rem 0.6rem;
+  background: rgba(28, 20, 32, 0.45);
+  border: 1px solid rgba(182, 166, 187, 0.16);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.7rem;
+  cursor: pointer;
+  color: var(--text);
+  font-family: inherit;
+}
+.mkt-theme:hover { border-color: var(--teal); }
+.mkt-theme.active { border-color: var(--gold); box-shadow: var(--glow-gold); }
+.mkt-theme.locked { opacity: 0.72; }
+.mkt-sw {
+  grid-area: sw;
+  width: 34px; height: 34px;
+  border-radius: 8px;
+  align-self: center;
+  border: 1px solid rgba(255,255,255,0.18);
+}
+.mkt-theme-name { grid-area: name; font-family: var(--font-ui); font-weight: 600; font-size: 0.9rem; }
+.mkt-theme-desc { grid-area: desc; font-size: 0.8rem; color: var(--muted); }
+.mkt-theme-tag { grid-area: tag; font-family: var(--font-ui); font-size: 0.7rem; color: var(--gold); margin-top: 0.15rem; }
+/* swatch previews (ground · gold · teal of each theme) */
+.sw-dusk      { background: linear-gradient(135deg, #1c1420 33%, #e8c06a 33% 66%, #57c4b8 66%); }
+.sw-candlelit { background: linear-gradient(135deg, #201613 33%, #f0cf86 33% 66%, #d8a24e 66%); }
+.sw-slate     { background: linear-gradient(135deg, #12161b 33%, #cdd6dd 33% 66%, #6fc6c0 66%); }
+.sw-spring    { background: linear-gradient(135deg, #121d18 33%, #d7e08a 33% 66%, #69d6a9 66%); }
+.sw-summer    { background: linear-gradient(135deg, #211a10 33%, #ffdf8a 33% 66%, #e6c25a 66%); }
+.sw-autumn    { background: linear-gradient(135deg, #1f1411 33%, #edb368 33% 66%, #e08a5a 66%); }
+.sw-winter    { background: linear-gradient(135deg, #131820 33%, #d8e6f0 33% 66%, #8fcfe0 66%); }
+
+.mkt-offers { display: flex; flex-direction: column; gap: 0.55rem; }
+.mkt-offer {
+  background: rgba(28, 20, 32, 0.45);
+  border: 1px solid rgba(182, 166, 187, 0.14);
+  border-radius: var(--radius-sm);
+  padding: 0.7rem 0.8rem;
+}
+.mkt-offer.got { border-color: rgba(154, 214, 176, 0.4); }
+.mkt-offer-head { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem; }
+.mkt-offer-name { font-family: var(--font-ui); font-weight: 600; }
+.mkt-kind {
+  font-family: var(--font-ui); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--muted); background: var(--aubergine); padding: 0.1rem 0.45rem; border-radius: 999px; margin-left: auto;
+}
+.mkt-offer-desc { font-size: 0.85rem; color: var(--muted); margin: 0 0 0.5rem; }
+.mkt-offer-foot { display: flex; justify-content: flex-end; }
+.mkt-owned { font-family: var(--font-ui); font-size: 0.82rem; color: var(--success); font-weight: 600; }
+.mkt-soon { font-family: var(--font-ui); font-size: 0.8rem; color: var(--rose); font-style: italic; }
+.mkt-redeem-note, .mkt-tip { font-size: 0.84rem; color: var(--muted); margin: 0.3rem 0; }
+.mkt-tip a, .mkt-redeem-note a { color: var(--gold); }
+.mkt-redeem { display: flex; gap: 0.5rem; margin: 0.4rem 0; }
+.mkt-redeem input {
+  flex: 1;
+  background: rgba(14, 9, 16, 0.5);
+  border: 1px solid rgba(182, 166, 187, 0.25);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: var(--font-ui);
+  padding: 0.5rem 0.7rem;
+}
+.mkt-msg { font-family: var(--font-ui); font-size: 0.84rem; color: var(--teal); min-height: 1.2em; margin: 0.2rem 0; }
 
 /* ===================== WARDS ===================== */
 .forge-note { font-size: 0.88rem; color: var(--muted); margin: 0 0 1rem; }

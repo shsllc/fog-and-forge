@@ -53,9 +53,27 @@
     }).catch(function (e) { console.warn("cloud.gameCompleted failed", e); return null; });
   }
 
+  // POST /checkout — Stripe Checkout session for a one-time SKU.
+  function checkout(sku) {
+    return authedFetch("/checkout", {
+      method: "POST",
+      body: JSON.stringify({ sku: sku }),
+    }).catch(function (e) { console.warn("cloud.checkout failed", e); return null; });
+  }
+
+  // POST /redeem — redeem a giveaway / share-to-win code for an entitlement.
+  function redeem(code) {
+    return authedFetch("/redeem", {
+      method: "POST",
+      body: JSON.stringify({ code: code }),
+    }).catch(function (e) { console.warn("cloud.redeem failed", e); return null; });
+  }
+
   window.GGCloud = {
     me: me,
     saveGame: saveGame,
     gameCompleted: gameCompleted,
+    checkout: checkout,
+    redeem: redeem,
   };
 })();

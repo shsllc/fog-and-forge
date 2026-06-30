@@ -190,9 +190,11 @@
 
     function bind(input, key) {
       input.addEventListener("change", function () {
-        st[key] = input.checked;
-        G.saveSettings(st);
-        UI.applySettings(st);
+        // Load-modify-save fresh so we never clobber the theme the market set.
+        var cur = G.loadSettings();
+        cur[key] = input.checked;
+        G.saveSettings(cur);
+        UI.applySettings(cur);
       });
     }
     bind(els["set-motion"], "reducedMotion");
@@ -209,6 +211,7 @@
     if (window.GGAccount) {
       window.GGAccount.ready({ getState: function () { return state; }, applyCloudState: applyCloudState });
     }
+    if (window.GGMarket) window.GGMarket.ready();
     UI.showScreen("title");
   }
 
