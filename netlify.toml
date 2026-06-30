@@ -1,0 +1,24 @@
+# Fog & Forge — Netlify static hosting config
+# Gracefully Glitching LLC
+# Pure static site: no build step, no framework. Netlify serves the repo root.
+
+[build]
+  publish = "."
+  # No build command — the game ships as hand-written HTML/CSS/JS.
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+    # Self-contained: scripts/styles are local, only data: used for the inline favicon.
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; base-uri 'self'; form-action 'self'"
+    Strict-Transport-Security = "max-age=63072000; includeSubDomains; preload"
+
+# Long-cache the static assets (they're versioned by content in practice).
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"

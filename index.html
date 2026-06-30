@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fog &amp; Forge — a short-session chronic illness RPG</title>
+  <meta name="description" content="Some days the fog rolls in and the spoons run short. Tend the forge anyway — a little at a time, on your own terms. A gentle RPG by Gracefully Glitching LLC." />
+  <meta name="theme-color" content="#1c1420" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='14' font-size='14'%3E%F0%9F%95%AF%EF%B8%8F%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to game</a>
+
+  <!-- ===================== TITLE SCREEN ===================== -->
+  <section id="screen-title" class="screen screen-title" aria-label="Title screen">
+    <div class="title-card">
+      <p class="entity-mark">Gracefully Glitching</p>
+      <h1 class="game-title"><span class="title-fog">Fog</span> &amp; <span class="title-forge">Forge</span></h1>
+      <p class="game-sub">A short-session chronic illness RPG</p>
+      <p class="game-blurb">
+        Some days the fog rolls in and the spoons run short.
+        Tend the forge anyway — a little at a time, on your own terms.
+      </p>
+
+      <div class="title-actions">
+        <button id="btn-new" class="btn btn-primary">New Game</button>
+        <button id="btn-continue" class="btn">Continue</button>
+        <button id="btn-settings" class="btn btn-ghost" aria-expanded="false">Accessibility</button>
+      </div>
+
+      <div id="settings-panel" class="settings-panel" hidden>
+        <h2>Accessibility &amp; comfort</h2>
+        <label class="toggle">
+          <input type="checkbox" id="set-motion" />
+          <span>Reduce motion</span>
+        </label>
+        <label class="toggle">
+          <input type="checkbox" id="set-text" />
+          <span>Larger text</span>
+        </label>
+        <label class="toggle">
+          <input type="checkbox" id="set-contrast" />
+          <span>Higher contrast</span>
+        </label>
+        <p class="settings-note">There is no timer and no penalty for stepping away. Your progress saves to this device automatically.</p>
+      </div>
+
+      <p class="title-footer">No accounts. No timers. Plays offline. Your save stays on your device.</p>
+    </div>
+  </section>
+
+  <!-- ===================== GAME SCREEN ===================== -->
+  <main id="screen-game" class="screen screen-game" hidden>
+    <header class="game-header">
+      <div class="header-left">
+        <span id="stat-day" class="badge badge-day">Day 1</span>
+        <span class="chapter-label">Chapter:</span>
+        <span id="chapter-title" class="chapter-title"></span>
+      </div>
+      <div class="header-right">
+        <div class="fog-meter" title="How thick the fog is today">
+          <span class="fog-label">Fog <span id="fog-band">fog</span></span>
+          <div class="fog-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Fog level">
+            <div id="fog-bar" class="fog-fill"></div>
+          </div>
+          <span id="stat-fog" class="fog-pct">0%</span>
+        </div>
+      </div>
+    </header>
+
+    <div id="main" class="game-grid">
+
+      <!-- LEFT: status -->
+      <aside class="panel panel-status" aria-label="Your day">
+        <div id="spoons" class="spoons" aria-live="polite"></div>
+
+        <div class="resources">
+          <div class="res"><span class="res-icon" aria-hidden="true">⛏️</span><span class="res-num" id="res-ore">0</span><span class="res-name">ore</span></div>
+          <div class="res"><span class="res-icon" aria-hidden="true">🔥</span><span class="res-num" id="res-ember">0</span><span class="res-name">ember</span></div>
+          <div class="res"><span class="res-icon" aria-hidden="true">🌊</span><span class="res-num" id="res-calm">0</span><span class="res-name">calm</span></div>
+        </div>
+
+        <div class="story-progress">
+          <p class="embers-line">Embers gathered: <strong id="embers-total">0</strong></p>
+          <p id="next-chapter" class="next-chapter"></p>
+        </div>
+
+        <div class="journal" aria-label="Journal">
+          <h2>Journal</h2>
+          <div id="journal-list" class="journal-list"></div>
+        </div>
+      </aside>
+
+      <!-- CENTER: actions + log -->
+      <section class="panel panel-actions" aria-label="Actions">
+        <h2 class="panel-title">What will you do?</h2>
+        <div id="actions" class="actions"></div>
+
+        <h2 class="panel-title log-title">The day, as it happens</h2>
+        <div id="log" class="log" role="log" aria-live="polite" aria-label="Event log"></div>
+      </section>
+
+      <!-- RIGHT: forge / wards -->
+      <aside class="panel panel-forge" aria-label="The forge">
+        <h2 class="panel-title">The Forge</h2>
+        <p class="forge-note">Forge Wards from what you gather. Each one makes the fog a little easier to live with. Forging costs 3 spoons.</p>
+        <div id="wards" class="wards"></div>
+      </aside>
+    </div>
+
+    <footer class="game-footer">
+      <button id="btn-restart" class="btn btn-ghost btn-small">Restart</button>
+      <span class="footer-mark">Fog &amp; Forge · Gracefully Glitching LLC</span>
+    </footer>
+  </main>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/game.js"></script>
+  <script src="assets/js/ui.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
