@@ -162,6 +162,16 @@ html.reduced-motion body::before { animation: none; }
   color: var(--muted);
 }
 
+.title-support {
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin: 0.5rem 0 0;
+}
+.title-support a, .footer-support { color: var(--gold); text-decoration: none; border-bottom: 1px dotted var(--gold); }
+.title-support a:hover, .footer-support:hover { color: var(--rose); border-bottom-color: var(--rose); }
+.footer-support { font-family: inherit; }
+
 /* account bar (hidden unless GG backend configured) */
 .ff-account {
   margin-top: 1.4rem;

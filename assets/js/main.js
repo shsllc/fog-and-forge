@@ -99,7 +99,7 @@
     var nx = G.nextChapter(state);
     var goal = nx
       ? "Next: " + Math.max(0, nx.embers - state.totals.embers) + " more embers toward “" + nx.title + ".”"
-      : "You've reached the Clearing. Keep the forge as long as it serves you.";
+      : "You've kept the forge through every chapter. Stay as long as it serves you.";
     flash("Welcome back to the forge. Day " + state.day + ". " + goal);
   }
 

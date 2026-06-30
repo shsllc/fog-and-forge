@@ -180,31 +180,66 @@
     },
     {
       id: 1,
-      embers: 6,
+      embers: 4,
+      title: "The Arithmetic of Spoons",
+      body:
+        "You've started counting before you stand up. Some mornings the number is cruel; some mornings it surprises you. The trick, you're learning, isn't to have more spoons — it's to spend the ones you have on what's actually yours to carry. The forge can wait. It has waited before.",
+    },
+    {
+      id: 2,
+      embers: 9,
       title: "What the Cold Seam Remembers",
       body:
         "You've found a rhythm — small days, honest ones. The seam gives ore and, now and then, an ember: a warm coin of the person you still are. You stop apologizing to the empty room for resting. The forge stays lit on the days you can, and that turns out to be most of them.",
     },
     {
-      id: 2,
-      embers: 16,
+      id: 3,
+      embers: 15,
+      title: "The First True Ward",
+      body:
+        "The first ward that actually holds — you feel it settle. Not a cure, not even close. Just a small, deliberate piece of the world bent slightly in your favour, by your own tired hands. You set it by the door, and the fog, for once, has to knock.",
+    },
+    {
+      id: 4,
+      embers: 23,
       title: "Names in the Grey",
       body:
         "Out in the fog you find the caches: a chipped cup, a child's mitten, a letter never sent. Other people walked here. Other people are walking here now. You leave your own small marker so the next forge-keeper knows the way back. Grief, you notice, has started to feel less like drowning and more like weather.",
     },
     {
-      id: 3,
-      embers: 30,
+      id: 5,
+      embers: 33,
+      title: "A Hearth Kept for Three",
+      body:
+        "Wren's third cup gets used now. People you barely know stop in, warm their hands, say little, and leave lighter. You didn't set out to build a place for anyone — you were just keeping your own fire lit. It turns out a kept fire is visible for miles, in fog like this.",
+    },
+    {
+      id: 6,
+      embers: 45,
       title: "The Long Lantern",
       body:
         "With the keystone ward forged, the lantern's light reaches past your own doorstep. Wren brings others. The forge becomes a place people come to warm their hands and set their tools down without shame. You did not beat the fog. You built something good inside it.",
     },
     {
-      id: 4,
-      embers: 48,
+      id: 7,
+      embers: 58,
       title: "The Clearing",
       body:
         "There's a rise east of town where, on the right kind of morning, you can see over the fog rather than through it. You walk there slowly, the way you do everything now. The view is not a cure. It is a clearing — proof the fog has edges, and that you learned to live right up against them, gracefully, glitching, still here.",
+    },
+    {
+      id: 8,
+      embers: 73,
+      title: "The Season Turns",
+      body:
+        "The fog changes with the season — thinner some weeks, bone-deep others. You've stopped expecting it to leave and started learning its moods, the way you'd learn a difficult, permanent housemate. There's a strange peace in it. Not resignation — familiarity. You know this weather now, and you know yourself in it.",
+    },
+    {
+      id: 9,
+      embers: 90,
+      title: "Those Who Come After",
+      body:
+        "Mirin keeps her own forge across the lane now. Some nights it's lit; some nights dark; she's stopped apologizing for either, because she learned that from you, who learned it the hard way. This is how it goes on — not fixed, not finished, but passed hand to hand: the lantern, the permission, the quiet insistence that a small life lived gently is a whole life. You keep your fire. Someone keeps theirs because you kept yours.",
     },
   ];
 

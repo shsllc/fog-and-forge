@@ -171,7 +171,7 @@
   function renderNextChapter(s) {
     var nx = G.nextChapter(s);
     if (!nx) {
-      els["next-chapter"].textContent = "You've reached the Clearing. Keep the forge as long as it serves you.";
+      els["next-chapter"].textContent = "You've kept the forge through every chapter. Stay as long as it serves you.";
       return;
     }
     var remaining = Math.max(0, nx.embers - s.totals.embers);
