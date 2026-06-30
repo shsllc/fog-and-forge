@@ -31,6 +31,7 @@
       touch();
     },
     beginDay: function () {
+      if (!G.canBeginDay(state)) { UI.renderAll(state, handlers); return; }
       G.beginDay(state);
       G.save(state);
       UI.renderAll(state, handlers);
@@ -73,6 +74,7 @@
       if (!ok) return;
     }
     state = G.newState();
+    state.spoonieMode = !!G.loadSettings().spoonieMode; // honor the chosen pace
     G.startGame(state);
     G.save(state);
     UI.showScreen("game");
@@ -200,6 +202,23 @@
     bind(els["set-motion"], "reducedMotion");
     bind(els["set-text"], "largeText");
     bind(els["set-contrast"], "highContrast");
+
+    // Full Spoonie Mode is a pacing choice, not a visual one: persist it as a
+    // preference AND apply it to the active save (player's autonomy to change).
+    var spoonie = els["set-spoonie"];
+    if (spoonie) {
+      spoonie.checked = !!st.spoonieMode;
+      spoonie.addEventListener("change", function () {
+        var cur = G.loadSettings();
+        cur.spoonieMode = spoonie.checked;
+        G.saveSettings(cur);
+        if (state) {
+          state.spoonieMode = spoonie.checked;
+          G.save(state);
+          UI.renderAll(state, handlers);
+        }
+      });
+    }
   }
 
   function init() {

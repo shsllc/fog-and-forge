@@ -38,6 +38,8 @@
       discoveries: [],      // ids of places found while venturing
       realDays: 0,          // distinct real-world days played (never "streak")
       giftDate: null,       // last real date a return-gift was given (YYYY-MM-DD)
+      spoonieMode: false,   // Full Spoonie Mode: only one in-game day per real day
+      lastDayStartedDate: null, // real date the current/last in-game day began
       flags: {},
       log: [],
       started: false,
@@ -88,6 +90,7 @@
 
   function beginDay(s) {
     s.dayActive = true;
+    s.lastDayStartedDate = todayStr(); // for Full Spoonie Mode's one-day-per-day gate
     s.spoons.max = rollSpoons(s);
     s.spoons.current = s.spoons.max;
     s.spoons.carryover = 0;
@@ -348,8 +351,24 @@
     return e;
   }
 
+  // Local calendar date (YYYY-MM-DD). Local — so "one day per day" and the
+  // return-gift roll over at the player's midnight, not UTC's.
   function todayStr() {
-    try { return new Date().toISOString().slice(0, 10); } catch (e) { return null; }
+    try {
+      var d = new Date();
+      return d.getFullYear() + "-" +
+        ("0" + (d.getMonth() + 1)).slice(-2) + "-" +
+        ("0" + d.getDate()).slice(-2);
+    } catch (e) { return null; }
+  }
+
+  // Full Spoonie Mode gate: you may begin a new in-game day only once per real
+  // day. An in-progress day can always be resumed; this only blocks starting
+  // the NEXT one. Off by default — entirely opt-in.
+  function canBeginDay(s) {
+    if (!s.spoonieMode) return true;
+    if (s.dayActive) return true; // already in today's day; nothing to gate
+    return s.lastDayStartedDate !== todayStr();
   }
 
   // First session of a new real day brings a small warm gift. Missing days
@@ -400,7 +419,7 @@
       var raw = localStorage.getItem(SETTINGS_KEY);
       if (raw) return JSON.parse(raw);
     } catch (e) {}
-    return { reducedMotion: false, largeText: false, highContrast: false };
+    return { reducedMotion: false, largeText: false, highContrast: false, spoonieMode: false };
   }
   function saveSettings(st) {
     try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(st)); } catch (e) {}
@@ -414,6 +433,7 @@
     forgeWard: forgeWard,
     endDay: endDay,
     canAfford: canAfford,
+    canBeginDay: canBeginDay,
     wardEffects: wardEffects,
     fogBand: fogBand,
     nextChapter: nextChapter,

@@ -451,6 +451,9 @@ html.reduced-motion .action-card:hover:not(:disabled) { transform: none; }
 
 .day-over { text-align: center; padding: 1.2rem 0.5rem; }
 .day-over p { color: var(--rose); font-style: italic; margin: 0 0 1rem; }
+.day-over-sub { font-family: var(--font-ui); font-size: 0.85rem; color: var(--muted); font-style: normal; max-width: 42ch; margin: 0 auto !important; }
+.toggle-spoonie { margin-top: 0.4rem; padding-top: 0.6rem; border-top: 1px solid rgba(182,166,187,0.14); }
+.settings-note-spoonie { color: var(--rose); }
 
 /* ===================== LOG ===================== */
 .log {

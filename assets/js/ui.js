@@ -19,7 +19,7 @@
       "spoons", "res-ore", "res-ember", "res-calm", "embers-total", "days-kept",
       "actions", "wards", "log", "journal", "journal-list",
       "next-chapter", "settings-panel", "btn-restart",
-      "set-motion", "set-text", "set-contrast", "almanac-body",
+      "set-motion", "set-text", "set-contrast", "set-spoonie", "almanac-body",
     ].forEach(function (id) { els[id] = $(id); });
   }
 
@@ -52,9 +52,11 @@
 
   function renderDaysKept(s) {
     var el = els["days-kept"];
-    if (el) el.textContent = s.realDays > 0
-      ? "Days kept: " + s.realDays + " (no streaks here — every return counts)"
-      : "";
+    if (!el) return;
+    var parts = [];
+    if (s.spoonieMode) parts.push("🌙 Full Spoonie Mode — one day per day");
+    if (s.realDays > 0) parts.push("Days kept: " + s.realDays + " (no streaks here — every return counts)");
+    el.textContent = parts.join(" · ");
   }
 
   function renderHeader(s) {
@@ -74,6 +76,15 @@
     if (!s.dayActive) {
       var done = document.createElement("div");
       done.className = "day-over";
+      if (!G.canBeginDay(s)) {
+        // Full Spoonie Mode: today's day is spent. The forge waits.
+        done.innerHTML =
+          "<p>🌙 That's today's turn at the forge.</p>" +
+          '<p class="day-over-sub">Full Spoonie Mode is on — one day per day. ' +
+          "The forge will keep. Come back tomorrow; rest is the rest of the work.</p>";
+        box.appendChild(done);
+        return;
+      }
       done.innerHTML = "<p>The day is done. Rest well.</p>";
       var btn = document.createElement("button");
       btn.className = "btn btn-primary";
