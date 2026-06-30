@@ -46,6 +46,8 @@
     els.log.scrollTop = els.log.scrollHeight;
   }
 
+  var HELP_SEEN_KEY = "fogforge.seenhelp.v1";
+
   function startNew() {
     if (G.hasSave()) {
       var ok = confirm("Start a new game? Your current forge will be lost.");
@@ -56,17 +58,54 @@
     G.save(state);
     UI.showScreen("game");
     UI.renderAll(state, handlers);
+    // First-timers get the walkthrough automatically (once).
+    try {
+      if (!localStorage.getItem(HELP_SEEN_KEY)) {
+        openHelp();
+        localStorage.setItem(HELP_SEEN_KEY, "1");
+      }
+    } catch (e) {}
   }
 
   function continueGame() {
     var loaded = G.load();
     if (!loaded) { startNew(); return; }
     state = loaded;
-    if (!state.dayActive && state.started) {
-      // mid-game, between days — show the begin-day prompt
-    }
     UI.showScreen("game");
     UI.renderAll(state, handlers);
+    // Gentle re-entry: remind the player where they are.
+    var nx = G.nextChapter(state);
+    var goal = nx
+      ? "Next: " + Math.max(0, nx.embers - state.totals.embers) + " more embers toward “" + nx.title + ".”"
+      : "You've reached the Clearing. Keep the forge as long as it serves you.";
+    flash("Welcome back to the forge. Day " + state.day + ". " + goal);
+  }
+
+  // ---- How to Play dialog ----
+  var dlg;
+  function openHelp() {
+    if (!dlg) return;
+    if (typeof dlg.showModal === "function") dlg.showModal();
+    else dlg.setAttribute("open", "");
+  }
+  function closeHelp() {
+    if (!dlg) return;
+    if (typeof dlg.close === "function") dlg.close();
+    else dlg.removeAttribute("open");
+  }
+  function wireHowTo() {
+    dlg = document.getElementById("how-dialog");
+    function on(id, fn) { var el = document.getElementById(id); if (el) el.addEventListener("click", fn); }
+    on("btn-how", openHelp);
+    on("btn-help", openHelp);
+    on("how-close", closeHelp);
+    on("how-start", closeHelp);
+    // click on the backdrop (outside the inner card) closes it
+    if (dlg) {
+      dlg.addEventListener("click", function (e) {
+        if (e.target === dlg) closeHelp();
+      });
+    }
   }
 
   function wireTitle() {
@@ -117,6 +156,7 @@
     UI.cache();
     wireTitle();
     wireSettings();
+    wireHowTo();
     UI.showScreen("title");
   }
 

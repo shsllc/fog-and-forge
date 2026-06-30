@@ -1,0 +1,6 @@
+# Fog & Forge — static site, no build artifacts to track
+.netlify/
+.DS_Store
+Thumbs.db
+*.log
+node_modules/

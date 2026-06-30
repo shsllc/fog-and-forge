@@ -20,7 +20,7 @@ The arc is deliberately *living-with*, not *cure*. As the final chapter puts it:
 
 ## Features
 
-- **Spoon-theory core loop.** Each day grants a *variable* number of spoons (energy). Bad days are real; good days aren't guaranteed. Wards raise your floor so the worst days are a little less worst.
+- **Spoon-theory core loop.** Each day grants a *variable* number of spoons (energy). Bad days are real; good days aren't guaranteed. Wards raise your floor so your worst days are a little gentler.
 - **Five actions, each with a cost and a consequence.** Gather Ore, Tend the Hearth, Venture into the Fog, Reflect, and Rest. **Rest is treated as progress, not failure** — and resting early gives a little back tomorrow.
 - **The Forge.** Craft five **Wards** from ore / ember / calm. Each grants a passive benefit (spoon floor, slower fog drift, better recovery, safer venturing) and pushes the fog back when forged.
 - **A five-chapter story** gated by embers gathered, plus an **unlockable journal** of in-character reflections on grief, pacing, and what "better" comes to mean.

@@ -440,3 +440,56 @@ html.reduced-motion .log { scroll-behavior: auto; }
   .panel-actions { order: 1; }
   .panel-forge { order: 3; }
 }
+
+.header-right { display: flex; align-items: center; gap: 0.7rem; }
+#btn-help { white-space: nowrap; }
+
+/* ===================== HOW TO PLAY DIALOG ===================== */
+.how-dialog {
+  border: none;
+  background: transparent;
+  padding: 0;
+  max-width: 640px;
+  width: calc(100% - 2rem);
+  color: var(--text);
+}
+.how-dialog::backdrop {
+  background: rgba(14, 9, 16, 0.72);
+  backdrop-filter: blur(3px);
+}
+.how-inner {
+  background: linear-gradient(180deg, var(--surface-raised), var(--surface));
+  border: 1px solid rgba(217, 159, 169, 0.25);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  max-height: 86vh;
+  display: flex;
+  flex-direction: column;
+}
+.how-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.1rem 1.3rem 0.8rem;
+  border-bottom: 1px solid rgba(182, 166, 187, 0.16);
+}
+.how-head h2 { margin: 0; font-size: 1.3rem; color: var(--gold); }
+.how-body { padding: 0.4rem 1.3rem 0.8rem; overflow-y: auto; }
+.how-lede { font-size: 1.05rem; color: var(--text); }
+.how-body h3 {
+  font-family: var(--font-ui);
+  font-size: 1rem;
+  color: var(--teal);
+  margin: 1.3rem 0 0.4rem;
+}
+.how-body ul { margin: 0.3rem 0 0.6rem; padding-left: 1.2rem; }
+.how-body li { margin: 0.28rem 0; }
+.how-body p { margin: 0.4rem 0; }
+.how-foot {
+  padding: 0.9rem 1.3rem 1.2rem;
+  border-top: 1px solid rgba(182, 166, 187, 0.16);
+  display: flex;
+  justify-content: flex-end;
+}
+html.reduced-motion .how-dialog::backdrop { backdrop-filter: none; }

@@ -126,7 +126,7 @@
       name: "Ward of Stillness",
       icon: "🪨",
       cost: { ore: 6, calm: 4 },
-      desc: "A grounding stone. Your worst days are a little less worst (+1 to the daily spoon floor).",
+      desc: "A grounding stone. Your worst days are a little gentler (+1 to the daily spoon floor).",
       effects: { spoonFloor: 1 },
       forged: "You set the stone by the door. Even thin mornings will have a little more in them now.",
     },

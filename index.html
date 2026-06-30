@@ -26,6 +26,7 @@
       <div class="title-actions">
         <button id="btn-new" class="btn btn-primary">New Game</button>
         <button id="btn-continue" class="btn">Continue</button>
+        <button id="btn-how" class="btn btn-ghost">How to Play</button>
         <button id="btn-settings" class="btn btn-ghost" aria-expanded="false">Accessibility</button>
       </div>
 
@@ -59,6 +60,7 @@
         <span id="chapter-title" class="chapter-title"></span>
       </div>
       <div class="header-right">
+        <button id="btn-help" class="btn btn-ghost btn-small" aria-label="How to play">? Help</button>
         <div class="fog-meter" title="How thick the fog is today">
           <span class="fog-label">Fog <span id="fog-band">fog</span></span>
           <div class="fog-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Fog level">
@@ -114,6 +116,51 @@
       <span class="footer-mark">Fog &amp; Forge · Gracefully Glitching LLC</span>
     </footer>
   </main>
+
+  <!-- ===================== HOW TO PLAY ===================== -->
+  <dialog id="how-dialog" class="how-dialog" aria-labelledby="how-title">
+    <div class="how-inner">
+      <header class="how-head">
+        <h2 id="how-title">How to play Fog &amp; Forge</h2>
+        <button id="how-close" class="btn btn-ghost btn-small" aria-label="Close how to play">Close ✕</button>
+      </header>
+
+      <div class="how-body">
+        <p class="how-lede">You keep a forge in Emberhollow, a town the fog never quite leaves. Each <strong>day</strong> is one short session — a few quiet minutes. Play at whatever pace your body allows. There is no timer, and there is no way to lose.</p>
+
+        <h3>🥄 Spoons are your energy</h3>
+        <p>Every morning you wake with a number of <strong>spoons</strong> — borrowed from <em>spoon theory</em>, the way many people with chronic illness describe a limited, daily supply of energy. Each action costs spoons. When they run low, the day ends.</p>
+        <ul>
+          <li><strong>A normal day is about 5 spoons.</strong></li>
+          <li>A clear, thin-fog morning might give you <strong>7–8</strong>.</li>
+          <li>A heavy-fog day might give only <strong>3</strong>. That's not failure — that's the weather.</li>
+          <li>Your count <em>varies on purpose.</em> You can't grind your way past a hard day; you pace through it.</li>
+        </ul>
+
+        <h3>🔨 What you do each day</h3>
+        <ul>
+          <li><strong>⛏️ Gather Ore</strong> (2🥄) — reliable ore, sometimes an ember.</li>
+          <li><strong>🕯️ Tend the Hearth</strong> (1🥄) — restores <em>calm</em>.</li>
+          <li><strong>🌫️ Venture into the Fog</strong> (4🥄) — bigger finds, but the fog may thicken.</li>
+          <li><strong>📖 Reflect</strong> (1🥄) — grows resilience and unlocks journal entries.</li>
+          <li><strong>🌙 Rest</strong> (free) — ends the day gently. <strong>Resting early is a skill, not a loss</strong> — it gives a little energy back tomorrow.</li>
+        </ul>
+
+        <h3>🔥 The Forge &amp; the Wards</h3>
+        <p>Spend <strong>ore, ember, and calm</strong> (and 3 spoons) to forge <strong>Wards</strong>. Each Ward is a small, permanent win: it might raise your worst-day floor, slow the fog, or make resting recover more. None of them cure the fog — they make it easier to live with, and each one pushes the fog back the moment it's forged.</p>
+
+        <h3>🕊️ Where it's all going</h3>
+        <p>The <strong>embers</strong> you gather (look for the tracker on the left) carry the story forward across five chapters, from <em>The Morning the Fog Stayed</em> to <em>The Clearing</em>. You won't beat the fog. You'll build something good inside it.</p>
+
+        <h3>💾 Your progress</h3>
+        <p>The game saves automatically to this device. Close the tab any time — <strong>Continue</strong> picks up exactly where you left off.</p>
+      </div>
+
+      <footer class="how-foot">
+        <button id="how-start" class="btn btn-primary">Begin</button>
+      </footer>
+    </div>
+  </dialog>
 
   <script src="assets/js/data.js"></script>
   <script src="assets/js/game.js"></script>
