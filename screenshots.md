@@ -34,6 +34,10 @@ Five screenshots for the Hot App Summer submission. Capture at a **desktop width
 ---
 
 ## Optional / bonus shots
+- **The Almanac:** open it from the **📖 Almanac** header button after some play — shows the townsfolk threads, the fog-glimpse bestiary, and the "days kept" stat. Great for showing the world-building depth.
+- **A townsfolk beat:** the event log right after a neighbour (Wren / Mirin / Bog / Quill) advances their story — captures the relationship/world-building.
+- **Daily return gift:** the 🎁 "the hearth was kept while you were away" line at the top of a new real-day's first session.
+- **Account / cross-device sync** (only on the games-hub deployment, where accounts are configured): the sign-in bar on the title screen, and/or the "Restore your forge from the cloud" offer after signing in on a second device.
 - **Rest framing:** the "the day ends gently" / "rest is part of the work" message after choosing Rest with spoons still in hand — captures the anti-grind philosophy.
 - **A heavy-fog morning:** a day that opens with a low spoon count and a "thick one" narrative line — shows the variability mechanic.
 - **The Clearing:** the final chapter title/closing once the story completes.

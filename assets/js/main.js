@@ -9,25 +9,44 @@
 
   var state = null;
 
+  // Notify the (optional) account layer that the save changed, so it can
+  // sync to the cloud. No-op when accounts aren't configured / signed in.
+  function touch() {
+    if (window.GGAccount) window.GGAccount.changed(state);
+  }
+
   var handlers = {
     doAction: function (id) {
       var r = G.doAction(state, id);
       if (!r.ok && r.reason) flash(r.reason);
       UI.renderAll(state, handlers);
       announceDayEnd(r);
+      touch();
     },
     forgeWard: function (id) {
       var r = G.forgeWard(state, id);
       if (!r.ok && r.reason) flash(r.reason);
       UI.renderAll(state, handlers);
       announceDayEnd(r);
+      touch();
     },
     beginDay: function () {
       G.beginDay(state);
       G.save(state);
       UI.renderAll(state, handlers);
+      touch();
     },
   };
+
+  // Replace the running game with a save pulled from the cloud (cross-device).
+  function applyCloudState(obj) {
+    if (!obj) return;
+    state = obj;
+    G.save(state);
+    UI.showScreen("game");
+    UI.renderAll(state, handlers);
+    flash("Restored your forge from the cloud. Welcome back, Day " + state.day + ".");
+  }
 
   function announceDayEnd(r) {
     if (r && r.endedDay) {
@@ -58,6 +77,8 @@
     G.save(state);
     UI.showScreen("game");
     UI.renderAll(state, handlers);
+    touch();
+    if (window.GGAccount) window.GGAccount.reconsiderRestore();
     // First-timers get the walkthrough automatically (once).
     try {
       if (!localStorage.getItem(HELP_SEEN_KEY)) {
@@ -73,6 +94,7 @@
     state = loaded;
     UI.showScreen("game");
     UI.renderAll(state, handlers);
+    if (window.GGAccount) window.GGAccount.reconsiderRestore();
     // Gentle re-entry: remind the player where they are.
     var nx = G.nextChapter(state);
     var goal = nx
@@ -104,6 +126,32 @@
     if (dlg) {
       dlg.addEventListener("click", function (e) {
         if (e.target === dlg) closeHelp();
+      });
+    }
+  }
+
+  // ---- Almanac dialog ----
+  var almDlg;
+  function openAlmanac() {
+    if (!almDlg || !state) return;
+    UI.renderAlmanac(state);
+    if (typeof almDlg.showModal === "function") almDlg.showModal();
+    else almDlg.setAttribute("open", "");
+  }
+  function closeAlmanac() {
+    if (!almDlg) return;
+    if (typeof almDlg.close === "function") almDlg.close();
+    else almDlg.removeAttribute("open");
+  }
+  function wireAlmanac() {
+    almDlg = document.getElementById("almanac-dialog");
+    function on(id, fn) { var el = document.getElementById(id); if (el) el.addEventListener("click", fn); }
+    on("btn-almanac", openAlmanac);
+    on("almanac-close", closeAlmanac);
+    on("almanac-done", closeAlmanac);
+    if (almDlg) {
+      almDlg.addEventListener("click", function (e) {
+        if (e.target === almDlg) closeAlmanac();
       });
     }
   }
@@ -157,6 +205,10 @@
     wireTitle();
     wireSettings();
     wireHowTo();
+    wireAlmanac();
+    if (window.GGAccount) {
+      window.GGAccount.ready({ getState: function () { return state; }, applyCloudState: applyCloudState });
+    }
     UI.showScreen("title");
   }
 

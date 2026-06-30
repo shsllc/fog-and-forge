@@ -232,6 +232,93 @@
     ],
   };
 
+  // ---- Townsfolk: recurring neighbours with small story threads. ----
+  // A beat advances when you meet them at the right place (`where`) and have
+  // gathered enough embers. No beat is ever missable; threads wait for you.
+  // Rewards are gentle: resources, calm, or an unlocked keepsake (journal id).
+  const TOWNSFOLK = [
+    {
+      id: "wren",
+      name: "Old Wren",
+      icon: "🧶",
+      where: "hearth",
+      blurb: "Your nearest neighbour. Brings tea and few words, which is exactly enough.",
+      beats: [
+        { minEmbers: 0, text: "Wren lets herself in, sets down two cups, and knits in the quiet while you work. She doesn't ask how you are. The not-asking is a kindness.", reward: { calm: 2 } },
+        { minEmbers: 8, text: "“My hands were a smith's once,” Wren says, nodding at the forge. “Then they weren't. You learn to keep warm other ways.” She leaves you the better cup.", reward: { calm: 3 } },
+        { minEmbers: 20, text: "Wren brings a third cup tonight — for whoever comes next, she says. “A hearth's no good kept for one.” She's started telling the others about your forge.", reward: { calm: 2, ember: 1, journal: "jw" } },
+      ],
+      done: "Wren sits by the fire most evenings now. She still doesn't ask. You've stopped needing her to.",
+    },
+    {
+      id: "mirin",
+      name: "Mirin",
+      icon: "🌱",
+      where: "hearth",
+      blurb: "Newly ill, newly furious about it. Reminds you of an earlier you.",
+      beats: [
+        { minEmbers: 4, text: "Mirin paces your hearth. “People keep telling me to push through.” You don't tell her that. You hand her a cup and let her be angry. It's the most useful thing anyone's done for her in weeks.", reward: { calm: 2 } },
+        { minEmbers: 14, text: "“How do you know when to stop?” Mirin asks. “Before I want to,” you say. “That's the whole trick, and it's a terrible trick.” She almost laughs. Progress.", reward: { calm: 3 } },
+        { minEmbers: 26, text: "Mirin rests — on purpose, early, without apologizing. She learned it watching you. You didn't know anyone was watching. It turns out the forge teaches more than you meant it to.", reward: { ember: 2, journal: "jm" } },
+      ],
+      done: "Mirin keeps her own small fire across the lane now. Some evenings you see it lit. Some evenings, dark. Both are fine.",
+    },
+    {
+      id: "bog",
+      name: "Bog the Ferryman",
+      icon: "🚣",
+      where: "fog",
+      blurb: "Poles a flat boat through the deep fog. Carries cargo, and grief.",
+      beats: [
+        { minEmbers: 6, text: "Out in the grey, Bog's lantern finds you first. He says nothing, just points you back toward town and waits to be sure you go. Ferrymen count the ones they couldn't.", reward: { ore: 2 } },
+        { minEmbers: 18, text: "“Lost a passenger to the deep fog, years back,” Bog says, poling slow. “Kept ferrying anyway. Somebody's got to know the safe channels.” He shows you one.", reward: { ore: 2, ember: 1 } },
+        { minEmbers: 32, text: "Bog hands you a spare lantern. “For when you go out without me.” It's the most he's ever trusted the fog with someone. You carry it carefully, both the lantern and what it means.", reward: { ore: 3, journal: "jb" } },
+      ],
+      done: "Bog waves from the water when your paths cross. The fog is wide enough now to feel less like a wall and more like a river you both know.",
+    },
+    {
+      id: "quill",
+      name: "Quill the Cartographer",
+      icon: "🗺️",
+      where: "fog",
+      blurb: "Maps the fog's edges. Believes everything has an edge, given patience.",
+      beats: [
+        { minEmbers: 12, text: "Quill is on her knees in the grey, sketching. “The fog has a shape,” she insists. “Most days I only get a corner of it.” She gives you a copy of the corner she has.", reward: { ember: 1 } },
+        { minEmbers: 24, text: "“People think a map is for getting out,” Quill says. “Mostly it's for not feeling lost while you're in.” She adds your forge to her map. A fixed point. A home.", reward: { ember: 2 } },
+        { minEmbers: 40, text: "Quill spreads the finished map. There's a rise marked at the eastern edge — a place the fog thins enough to see over. “The Clearing,” she says. “I've never gone. I think it's your turn.”", reward: { ember: 3, journal: "jq" } },
+      ],
+      done: "Quill's map hangs by your forge door. The Clearing is marked in gold. You know the way now, whenever a morning allows it.",
+    },
+  ];
+
+  // ---- Glimpses: gentle phenomena seen while venturing. A soft bestiary. ----
+  const GLIMPSES = [
+    { id: "lanternmoth", icon: "🦋", name: "Lantern-moth", text: "A moth the size of a hand, glowing faint gold. It leads lost folk home, they say, if they're willing to go slow enough to follow." },
+    { id: "fogdeer", icon: "🦌", name: "Fog-deer", text: "It watches you from the grey, unhurried. It has nowhere to be either. You nod to each other, two creatures pacing themselves." },
+    { id: "stillpool", icon: "💧", name: "The Still Pool", text: "A pool that doesn't ripple, even in wind. People leave names at its edge — written on stones, on leaves. A place to set something down." },
+    { id: "emberbird", icon: "🐦", name: "Ember-bird", text: "Small, dull brown, easy to miss — until it opens its wings and the underside is banked coals. Beauty you only see if it chooses to show you." },
+    { id: "greywarden", icon: "🗿", name: "Grey Warden", text: "A standing stone, worn featureless. Old enough to predate the fog. It has outlasted worse weather than this, and so, the thought arrives, might you." },
+    { id: "lostkite", icon: "🪁", name: "A Lost Kite", text: "Caught in a dead tree, string trailing into the fog. Somebody flew this on a clearer day. Somebody had a clearer day here once. So might you again." },
+  ];
+
+  // ---- Daily return gifts: warm, never a reward for streaks. ----
+  // Given on the first session of a new real-world day. Missing days costs
+  // nothing — the hearth is simply kept while you're away.
+  const DAILY_GIFTS = [
+    { text: "The hearth was kept while you were away. Someone — Wren, probably — left it banked. You begin warm.", reward: { calm: 2 } },
+    { text: "A neighbour left ore on your step, no note. The town looks after the forge now, a little.", reward: { ore: 2 } },
+    { text: "You find an ember cupped in ash from yesterday, still faintly warm. Saved, somehow, for you.", reward: { ember: 1 } },
+    { text: "You slept, or you didn't, but you're here. That counts. The fire takes the first spark easily today.", reward: { calm: 1, carry: 1 } },
+  ];
+
+  // Extra journal keepsakes unlocked by townsfolk threads (merged into JOURNAL view).
+  const THREAD_JOURNAL = [
+    { id: "jw", title: "Wren's third cup", text: "She set out a cup for someone who hadn't arrived yet. That's the whole philosophy, isn't it — keep the place warm enough that arrival is possible. I've been keeping it warm for one. Time to set out a third cup." },
+    { id: "jm", title: "What Mirin learned", text: "She rested early today, on purpose, and didn't say sorry. I taught her that without meaning to, just by doing it where she could see. We pass this down. The pacing, the permission. A quiet inheritance." },
+    { id: "jb", title: "Bog's spare lantern", text: "He lost someone to the deep fog and kept ferrying. I used to think that was stubbornness. Now I think it's love with nowhere else to go, so it goes back out on the water, every day, lighting the channel for the next person." },
+    { id: "jq", title: "The Clearing, marked", text: "Quill put my forge on her map. A fixed point. After a year of feeling like I was disappearing into the grey, someone drew me as a place that stays. The Clearing is marked in gold to the east. My turn, she says." },
+  ];
+
   // ---- helpers shared with engine ----
   function pick(arr, rng) {
     return arr[rng.int(0, arr.length - 1)];
@@ -253,7 +340,12 @@
     ACTIONS: ACTIONS,
     WARDS: WARDS,
     CHAPTERS: CHAPTERS,
-    JOURNAL: JOURNAL,
+    JOURNAL: JOURNAL,                       // reflect-unlocked entries
+    THREAD_JOURNAL: THREAD_JOURNAL,         // townsfolk-thread keepsakes
+    ALL_JOURNAL: JOURNAL.concat(THREAD_JOURNAL), // for lookups by id
+    TOWNSFOLK: TOWNSFOLK,
+    GLIMPSES: GLIMPSES,
+    DAILY_GIFTS: DAILY_GIFTS,
     DAY_OPENERS: DAY_OPENERS,
     helpers: { pick: pick, clamp: clamp, mitigatedFog: mitigatedFog },
   };

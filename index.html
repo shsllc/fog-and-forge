@@ -30,6 +30,22 @@
         <button id="btn-settings" class="btn btn-ghost" aria-expanded="false">Accessibility</button>
       </div>
 
+      <!-- Account bar — hidden entirely unless the GG backend is configured. -->
+      <div id="ff-account" class="ff-account" hidden>
+        <div id="ff-signed-out" class="ff-acct-row">
+          <span class="ff-acct-msg">Sign in to keep one forge across all your devices.</span>
+          <button id="ff-signin" class="btn btn-small">Sign in</button>
+        </div>
+        <div id="ff-signed-in" class="ff-acct-row" hidden>
+          <span class="ff-acct-msg">Synced as <strong id="ff-email">…</strong></span>
+          <button id="ff-signout" class="btn btn-ghost btn-small">Sign out</button>
+        </div>
+        <div class="ff-acct-row ff-restore-row">
+          <span id="ff-restore-note" class="ff-acct-msg"></span>
+          <button id="ff-restore" class="btn btn-primary btn-small" hidden>Restore cloud forge</button>
+        </div>
+      </div>
+
       <div id="settings-panel" class="settings-panel" hidden>
         <h2>Accessibility &amp; comfort</h2>
         <label class="toggle">
@@ -60,6 +76,7 @@
         <span id="chapter-title" class="chapter-title"></span>
       </div>
       <div class="header-right">
+        <button id="btn-almanac" class="btn btn-ghost btn-small">📖 Almanac</button>
         <button id="btn-help" class="btn btn-ghost btn-small" aria-label="How to play">? Help</button>
         <div class="fog-meter" title="How thick the fog is today">
           <span class="fog-label">Fog <span id="fog-band">fog</span></span>
@@ -86,6 +103,7 @@
         <div class="story-progress">
           <p class="embers-line">Embers gathered: <strong id="embers-total">0</strong></p>
           <p id="next-chapter" class="next-chapter"></p>
+          <p id="days-kept" class="days-kept"></p>
         </div>
 
         <div class="journal" aria-label="Journal">
@@ -162,9 +180,28 @@
     </div>
   </dialog>
 
+  <!-- ===================== ALMANAC ===================== -->
+  <dialog id="almanac-dialog" class="how-dialog" aria-labelledby="almanac-title">
+    <div class="how-inner">
+      <header class="how-head">
+        <h2 id="almanac-title">The Almanac of Emberhollow</h2>
+        <button id="almanac-close" class="btn btn-ghost btn-small" aria-label="Close almanac">Close ✕</button>
+      </header>
+      <div id="almanac-body" class="how-body almanac-body"></div>
+      <footer class="how-foot">
+        <button id="almanac-done" class="btn btn-primary">Back to the forge</button>
+      </footer>
+    </div>
+  </dialog>
+
   <script src="assets/js/data.js"></script>
   <script src="assets/js/game.js"></script>
   <script src="assets/js/ui.js"></script>
+  <!-- GG accounts + cloud sync (inert until assets/js/gg/config.js is filled in) -->
+  <script src="assets/js/gg/config.js"></script>
+  <script src="assets/js/gg/auth.js"></script>
+  <script src="assets/js/gg/cloud.js"></script>
+  <script src="assets/js/gg/account.js"></script>
   <script src="assets/js/main.js"></script>
 </body>
 </html>

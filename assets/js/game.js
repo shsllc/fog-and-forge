@@ -33,6 +33,10 @@
       totals: { embers: 0, daysPlayed: 0, wardsForged: 0 },
       journalUnlocked: [],
       reflectCount: 0,
+      townsfolk: {},        // id -> number of beats completed
+      glimpses: [],         // ids of fog phenomena seen
+      realDays: 0,          // distinct real-world days played (never "streak")
+      giftDate: null,       // last real date a return-gift was given (YYYY-MM-DD)
       flags: {},
       log: [],
       started: false,
@@ -92,6 +96,7 @@
     var openers = D.DAY_OPENERS[band];
     log(s, "— Day " + s.day + " —", "day");
     log(s, openers[RNG.int(0, openers.length - 1)], "ambient");
+    maybeDailyGift(s); // warm welcome on the first session of a new real day
     log(s, "You have " + s.spoons.max + " spoon" + (s.spoons.max === 1 ? "" : "s") + " today.", "spoons");
   }
 
@@ -113,6 +118,14 @@
     if (action.id === "reflect") {
       s.reflectCount += 1;
       checkJournal(s);
+    }
+
+    // Tending the hearth and venturing can advance the world around you.
+    if (action.id === "hearth") {
+      tryTownsfolk(s, "hearth");
+    } else if (action.id === "venture") {
+      tryTownsfolk(s, "fog");
+      tryGlimpse(s, RNG);
     }
 
     var ended = false;
@@ -205,6 +218,75 @@
     return D.CHAPTERS.find(function (c) { return c.id === s.chapter + 1; }) || null;
   }
 
+  // ---------- world-building: townsfolk, glimpses, daily gifts ----------
+  function applyReward(s, reward) {
+    if (!reward) return;
+    if (reward.ore) s.resources.ore += reward.ore;
+    if (reward.calm) s.resources.calm += reward.calm;
+    if (reward.ember) { s.resources.ember += reward.ember; s.totals.embers += reward.ember; }
+    if (reward.carry) s.spoons.carryover = (s.spoons.carryover || 0) + reward.carry;
+    if (reward.journal && s.journalUnlocked.indexOf(reward.journal) === -1) {
+      s.journalUnlocked.push(reward.journal);
+    }
+  }
+
+  // Advance one townsfolk thread that's "due" at this place. Returns a log
+  // line or null. Threads never expire — a due beat waits until you show up.
+  function tryTownsfolk(s, where) {
+    var candidates = D.TOWNSFOLK.filter(function (p) {
+      if (p.where !== where) return false;
+      var done = s.townsfolk[p.id] || 0;
+      if (done >= p.beats.length) return false;
+      return s.totals.embers >= p.beats[done].minEmbers;
+    });
+    if (candidates.length === 0) return null;
+    // Prefer the person you've talked to least, for variety.
+    candidates.sort(function (a, b) {
+      return (s.townsfolk[a.id] || 0) - (s.townsfolk[b.id] || 0);
+    });
+    var person = candidates[0];
+    var idx = s.townsfolk[person.id] || 0;
+    var beat = person.beats[idx];
+    s.townsfolk[person.id] = idx + 1;
+    applyReward(s, beat.reward);
+    var line = person.icon + " " + person.name + ": " + beat.text;
+    if (s.townsfolk[person.id] >= person.beats.length) {
+      log(s, line, "people");
+      return { person: person, done: true };
+    }
+    log(s, line, "people");
+    return { person: person, done: false };
+  }
+
+  function tryGlimpse(s, rng) {
+    var unseen = D.GLIMPSES.filter(function (g) { return s.glimpses.indexOf(g.id) === -1; });
+    if (unseen.length === 0) return null;
+    if (!rng.chance(0.5)) return null;
+    var g = unseen[rng.int(0, unseen.length - 1)];
+    s.glimpses.push(g.id);
+    log(s, g.icon + " You glimpse something in the grey — " + g.name + ". " + g.text, "glimpse");
+    return g;
+  }
+
+  function todayStr() {
+    try { return new Date().toISOString().slice(0, 10); } catch (e) { return null; }
+  }
+
+  // First session of a new real day brings a small warm gift. Missing days
+  // costs nothing — this is the opposite of a streak.
+  function maybeDailyGift(s) {
+    var today = todayStr();
+    if (!today || s.giftDate === today) return;
+    s.giftDate = today;
+    s.realDays += 1;
+    var gifts = D.DAILY_GIFTS;
+    var gift = gifts[(s.realDays - 1) % gifts.length];
+    applyReward(s, gift.reward);
+    log(s, "🎁 " + gift.text, "gift");
+  }
+
+  function townsfolkBeat(s, id) { return s.townsfolk[id] || 0; }
+
   // ---------- log ----------
   function log(s, text, kind) {
     s.log.push({ text: text, kind: kind || "info", day: s.day });
@@ -255,6 +337,7 @@
     wardEffects: wardEffects,
     fogBand: fogBand,
     nextChapter: nextChapter,
+    townsfolkBeat: townsfolkBeat,
     checkChapter: checkChapter,
     checkJournal: checkJournal,
     save: save,

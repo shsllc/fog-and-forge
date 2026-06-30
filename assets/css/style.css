@@ -162,6 +162,26 @@ html.reduced-motion body::before { animation: none; }
   color: var(--muted);
 }
 
+/* account bar (hidden unless GG backend configured) */
+.ff-account {
+  margin-top: 1.4rem;
+  background: rgba(28, 20, 32, 0.55);
+  border: 1px solid rgba(87, 196, 184, 0.22);
+  border-radius: var(--radius-sm);
+  padding: 0.7rem 0.9rem;
+}
+.ff-acct-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+}
+.ff-acct-row + .ff-acct-row { margin-top: 0.5rem; }
+.ff-restore-row:empty { display: none; }
+.ff-acct-msg { font-family: var(--font-ui); font-size: 0.85rem; color: var(--muted); }
+.ff-acct-msg strong { color: var(--teal); }
+
 /* ===================== BUTTONS ===================== */
 .btn {
   font-family: var(--font-ui);
@@ -402,6 +422,73 @@ html.reduced-motion .log { scroll-behavior: auto; }
 .log-forge { color: var(--gold); }
 .log-chapter { color: var(--gold); font-weight: 700; font-style: italic; }
 .log-flash { color: var(--danger); font-family: var(--font-ui); font-size: 0.85rem; }
+.log-people { color: var(--rose); }
+.log-glimpse { color: var(--teal); font-style: italic; }
+.log-gift { color: var(--gold); font-family: var(--font-ui); font-size: 0.92rem; }
+
+.days-kept { font-family: var(--font-ui); font-size: 0.78rem; color: var(--muted); margin: 0.5rem 0 0; }
+
+/* ===================== ALMANAC ===================== */
+.almanac-body .alm-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.6rem 0 0.4rem;
+}
+.alm-chip {
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  color: var(--muted);
+  background: rgba(28, 20, 32, 0.5);
+  border: 1px solid rgba(182, 166, 187, 0.16);
+  border-radius: 999px;
+  padding: 0.3rem 0.7rem;
+}
+.alm-chip strong { color: var(--gold); }
+.alm-chip-ic { margin-right: 0.2rem; }
+.alm-h {
+  font-family: var(--font-ui);
+  font-size: 0.95rem;
+  color: var(--teal);
+  margin: 1.3rem 0 0.5rem;
+}
+.alm-people { display: flex; flex-direction: column; gap: 0.55rem; }
+.alm-person {
+  background: rgba(28, 20, 32, 0.45);
+  border: 1px solid rgba(182, 166, 187, 0.12);
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 0.8rem;
+  opacity: 0.7;
+}
+.alm-person.met { opacity: 1; border-color: rgba(217, 159, 169, 0.25); }
+.alm-person-head { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.3rem; flex-wrap: wrap; }
+.alm-ic { font-size: 1.25rem; }
+.alm-person-name { font-family: var(--font-ui); font-weight: 600; }
+.alm-person-status {
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  color: var(--gold);
+  margin-left: auto;
+  background: var(--aubergine);
+  padding: 0.12rem 0.5rem;
+  border-radius: 999px;
+}
+.alm-person-text { font-size: 0.9rem; color: var(--text); margin: 0; }
+.alm-glimpses { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+@media (max-width: 560px) { .alm-glimpses { grid-template-columns: 1fr; } }
+.alm-glimpse {
+  display: flex;
+  gap: 0.55rem;
+  align-items: flex-start;
+  background: rgba(28, 20, 32, 0.45);
+  border: 1px solid rgba(182, 166, 187, 0.12);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.7rem;
+  opacity: 0.6;
+}
+.alm-glimpse.seen { opacity: 1; }
+.alm-gname { display: block; font-family: var(--font-ui); font-weight: 600; font-size: 0.9rem; }
+.alm-gtext { display: block; font-size: 0.82rem; color: var(--muted); margin-top: 0.15rem; }
 
 /* ===================== WARDS ===================== */
 .forge-note { font-size: 0.88rem; color: var(--muted); margin: 0 0 1rem; }

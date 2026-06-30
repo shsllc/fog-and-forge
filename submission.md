@@ -24,11 +24,12 @@ From what you gather you forge **Wards**: a grounding stone that lifts your wors
 It's built to the brand of Gracefully Glitching LLC: warm and unflinching, never toxic-positive, with explicit care taken to avoid "fight/beat/warrior" framings of illness. Accessibility is a feature, not an afterthought — reduce-motion, larger-text, and higher-contrast modes; keyboard-first play; ARIA live regions; and a no-account, offline-first, save-stays-on-your-device design.
 
 ## Built With
-- **HTML5** — semantic, single-page, two-screen structure (title / game).
+- **HTML5** — semantic, single-page, two-screen structure (title / game) with native `<dialog>` for the How-to-Play walkthrough and the Almanac.
 - **CSS3** — custom-property theming, responsive grid, three accessibility modes, a subtle animated fog layer that fully disables under reduced-motion.
-- **Vanilla JavaScript (ES5-style, no framework, no build)** — split into `data.js` (content/balance), `game.js` (engine + save/load), `ui.js` (rendering), `main.js` (wiring).
+- **Vanilla JavaScript (ES5-style, no framework, no build)** — `data.js` (content/balance incl. townsfolk & glimpses), `game.js` (engine, world-building, save/load), `ui.js` (rendering + Almanac), `main.js` (wiring), and a shared `gg/` account layer.
 - **Web Storage API (`localStorage`)** — autosave of game state and accessibility settings.
-- **Netlify** — static hosting + `netlify.toml`.
+- **AWS (optional accounts + cross-device cloud sync)** — Amazon **Cognito** Hosted UI (Authorization Code + PKCE) and an **API Gateway + Lambda** backend (`GET /me`, `PUT /saved-game`), shared with the other Gracefully Glitching games so one sign-in covers them all. Inert by default; the standalone build stays fully offline.
+- **Netlify** — static hosting + `netlify.toml`; the game is served under the shared `games.gracefullyglitching.com` origin so its login is shared with the games hub.
 - **TypeScript** — `brand/entity-rules.ts` as the typed single source of truth for entity, voice, and palette.
 
 ## Netlify Primitives Used

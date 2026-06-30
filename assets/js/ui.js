@@ -16,10 +16,10 @@
     [
       "screen-title", "screen-game", "btn-new", "btn-continue", "btn-settings",
       "stat-day", "stat-fog", "fog-bar", "fog-band", "chapter-title",
-      "spoons", "res-ore", "res-ember", "res-calm", "embers-total",
+      "spoons", "res-ore", "res-ember", "res-calm", "embers-total", "days-kept",
       "actions", "wards", "log", "journal", "journal-list",
       "next-chapter", "settings-panel", "btn-restart",
-      "set-motion", "set-text", "set-contrast",
+      "set-motion", "set-text", "set-contrast", "almanac-body",
     ].forEach(function (id) { els[id] = $(id); });
   }
 
@@ -48,6 +48,13 @@
     els["res-ember"].textContent = s.resources.ember;
     els["res-calm"].textContent = s.resources.calm;
     els["embers-total"].textContent = s.totals.embers;
+  }
+
+  function renderDaysKept(s) {
+    var el = els["days-kept"];
+    if (el) el.textContent = s.realDays > 0
+      ? "Days kept: " + s.realDays + " (no streaks here — every return counts)"
+      : "";
   }
 
   function renderHeader(s) {
@@ -152,7 +159,7 @@
       return;
     }
     s.journalUnlocked.forEach(function (id) {
-      var j = D.JOURNAL.find(function (x) { return x.id === id; });
+      var j = D.ALL_JOURNAL.find(function (x) { return x.id === id; });
       if (!j) return;
       var det = document.createElement("details");
       det.className = "journal-entry";
@@ -173,10 +180,62 @@
       : remaining + " more ember" + (remaining === 1 ? "" : "s") + " until: " + nx.title;
   }
 
+  // ---- Almanac (the world you've built) ----
+  function renderAlmanac(s) {
+    var box = els["almanac-body"];
+    if (!box) return;
+    var html = "";
+
+    // Stats strip
+    var peopleMet = D.TOWNSFOLK.filter(function (p) { return (s.townsfolk[p.id] || 0) > 0; }).length;
+    html += '<div class="alm-stats">' +
+      statChip("🗓️", s.realDays, "days kept") +
+      statChip("🔥", s.totals.embers, "embers") +
+      statChip("🪨", s.wards.length, "wards") +
+      statChip("🤝", peopleMet, "of " + D.TOWNSFOLK.length + " met") +
+      statChip("🦋", s.glimpses.length, "of " + D.GLIMPSES.length + " glimpsed") +
+      "</div>";
+
+    // Townsfolk
+    html += '<h3 class="alm-h">Townsfolk of Emberhollow</h3><div class="alm-people">';
+    D.TOWNSFOLK.forEach(function (p) {
+      var done = s.townsfolk[p.id] || 0;
+      var total = p.beats.length;
+      var met = done > 0;
+      var complete = done >= total;
+      var status = !met ? "Not yet met" : complete ? "Thread complete" : "Knowing them (" + done + "/" + total + ")";
+      var latest = complete ? p.done : (met ? p.beats[done - 1].text : p.blurb);
+      html += '<div class="alm-person' + (met ? " met" : "") + '">' +
+        '<div class="alm-person-head"><span class="alm-ic" aria-hidden="true">' + p.icon + "</span>" +
+        '<span class="alm-person-name">' + (met ? p.name : "A stranger in the fog") + "</span>" +
+        '<span class="alm-person-status">' + status + "</span></div>" +
+        '<p class="alm-person-text">' + latest + "</p></div>";
+    });
+    html += "</div>";
+
+    // Glimpses
+    html += '<h3 class="alm-h">Glimpses in the grey</h3><div class="alm-glimpses">';
+    D.GLIMPSES.forEach(function (g) {
+      var seen = s.glimpses.indexOf(g.id) !== -1;
+      html += '<div class="alm-glimpse' + (seen ? " seen" : "") + '">' +
+        '<span class="alm-ic" aria-hidden="true">' + (seen ? g.icon : "❓") + "</span>" +
+        '<div><span class="alm-gname">' + (seen ? g.name : "Not yet glimpsed") + "</span>" +
+        (seen ? '<span class="alm-gtext">' + g.text + "</span>" : "") + "</div></div>";
+    });
+    html += "</div>";
+
+    box.innerHTML = html;
+  }
+  function statChip(icon, n, label) {
+    return '<span class="alm-chip"><span class="alm-chip-ic" aria-hidden="true">' + icon +
+      '</span><strong>' + n + "</strong> " + label + "</span>";
+  }
+
   function renderAll(s, handlers) {
     renderHeader(s);
     renderSpoons(s);
     renderResources(s);
+    renderDaysKept(s);
     renderActions(s, handlers);
     renderWards(s, handlers);
     renderLog(s);
@@ -200,6 +259,7 @@
   global.FF_UI = {
     cache: cache,
     renderAll: renderAll,
+    renderAlmanac: renderAlmanac,
     renderLog: renderLog,
     applySettings: applySettings,
     showScreen: showScreen,
